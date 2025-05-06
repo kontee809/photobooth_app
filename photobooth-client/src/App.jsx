@@ -6,23 +6,25 @@ import Home from './component/Home';
 import Footer from './component/Footer';
 import RegisterForm from './component/RegisterForm';
 import LoginForm from './component/LoginForm';
+import { AuthProvider } from './Context/AuthContext';  // Import AuthProvider
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="bg-[#ffadb1] backdrop-blur-md min-h-screen">
-        <Header />
+      <AuthProvider> {/* Di chuyển AuthProvider ra ngoài Routes */}
+        <div className="bg-[#ffadb1] backdrop-blur-md min-h-screen">
+          <Header />
 
-        {/* Bọc các Route bên trong Routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/camera" element={<WebcamCapture />} />
-          <Route path='/sign-up' element={<RegisterForm />} />
-          <Route path='/sign-in' element={<LoginForm />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/camera" element={<WebcamCapture />} />
+            <Route path='/sign-up' element={<RegisterForm />} />
+            <Route path='/sign-in' element={<LoginForm />} />
+          </Routes>
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

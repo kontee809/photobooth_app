@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useContext } from 'react'; // Kết hợp tất cả các imports của React, useState và useContext
 import googleIcon from '../assets/google_logo_icon_169090.png';
+import { AuthContext } from '../Context/AuthContext';
+const Register = () => {
+   const [formData, setFormData] = useState({
+        user_name: '',
+        email: '',
+        password: ''
+    });
+    const { register } = useContext(AuthContext);
+     
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-function RegisterForm() {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        register(formData.user_name, formData.email, formData.password);
+        console.log(formData.user_name, formData.email, formData.password);
+
+    };
+
     return (
         <main>
-            <form action="">
+            <form onSubmit={handleSubmit}>
                 <div className="min-h-screen flex justify-center items-center bg-gray-100">
                     <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
                         <div className="mb-6 text-center">
@@ -14,21 +32,27 @@ function RegisterForm() {
                         <div className="mb-4">
                             <input
                                 type="text"
-                                placeholder="Tên tài khoản"
+                                name="user_name"
+                                placeholder="Username"
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 text-sm border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="email" // Sửa type thành email (chuẩn hơn)
+                                name="email"
+                                placeholder="Email"
+                                onChange={handleChange}
                                 className="w-full px-4 py-3 text-sm border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                             />
                         </div>
                         <div className="mb-4">
                             <input
                                 type="password"
-                                placeholder="Mật khẩu"
-                                className="w-full px-4 py-3 text-sm border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <input
-                                type="password"
-                                placeholder="Nhập lại mật khẩu"
+                                name="password"
+                                placeholder="Nhập mật khẩu"
+                                onChange={handleChange}
                                 className="w-full px-4 py-3 text-sm border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                             />
                         </div>
@@ -46,7 +70,7 @@ function RegisterForm() {
 
                         <div className="mb-4">
                             <button
-                                type="button"
+                                type="submit" // Chuyển từ type="button" thành type="submit" để submit form
                                 className="w-full py-3 text-sm font-medium text-white bg-[#de767e] rounded-lg hover:bg-[#c63e81] transition"
                             >
                                 Đăng kí
@@ -75,6 +99,6 @@ function RegisterForm() {
             </form>
         </main>
     );
-}
+};
 
-export default RegisterForm;
+export default Register;

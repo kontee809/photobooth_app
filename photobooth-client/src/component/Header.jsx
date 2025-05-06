@@ -1,7 +1,10 @@
 import React from 'react'
 import cameraIcon from '../assets/camera-icon.png';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
 
 export default function Header() {
+    const { token, logout } = useContext(AuthContext);
   return (
    <header class="pb-6 lg:pb-0">
     <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -35,8 +38,15 @@ export default function Header() {
 
                 <a href="#" title="" class="text-base font-medium text-black transition-all duration-200 hover:text-[#c63e81] focus:text-[#c63e81]"> Pricing </a>
             </div>
+            {
+                token?(
+                    <button  onClick={logout} title="" class="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-[#de767e] border border-transparent rounded-md lg:inline-flex hover:bg-[#c63e81] focus:bg-[#c63e81]" role="button"> Đăng xuất </button>
 
-            <a href="/sign-in" title="" class="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-[#de767e] border border-transparent rounded-md lg:inline-flex hover:bg-[#c63e81] focus:bg-[#c63e81]" role="button"> Đăng nhập </a>
+                ) : (
+                    <a href="/sign-in" title="" class="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-[#de767e] border border-transparent rounded-md lg:inline-flex hover:bg-[#c63e81] focus:bg-[#c63e81]" role="button"> Đăng nhập </a>
+
+                )
+            }
         </nav>
 
 

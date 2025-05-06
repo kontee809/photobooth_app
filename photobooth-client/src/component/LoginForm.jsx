@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useState, useContext } from 'react'; 
+import { AuthContext } from '../Context/AuthContext';
 import googleIcon from '../assets/google_logo_icon_169090.png';
 import cameraIcon from '../assets/camera-icon.png';
 
-function LoginForm() {
+
+const Login = () => {
+   const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+    const { login } = useContext(AuthContext);
+     
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        try {
+        login(formData.email, formData.password);
+  } catch (err) {
+    console.error("Đăng ký thất bại:", err);
+  }
+    
+    };
     return (
         <main>
-            <form action="">
+            <form onSubmit={handleSubmit}>
                 {/* Main Container */}
                 <div className="min-h-screen flex justify-center items-center bg-gray-100">
                     {/* Login Container */}
@@ -36,15 +57,19 @@ function LoginForm() {
                             <div className="mb-4">
                                 <input
                                     type="text"
-                                    placeholder="Tên tài khoản"
+                                    name="email"
+                                    placeholder="Email"
+                                    onChange={handleChange}
                                     className="w-full px-4 py-3 border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                     required
                                 />
                             </div>
                             <div className="mb-4">
                                 <input
+                                    name="password"
                                     type="password"
                                     placeholder="Mật khẩu"
+                                    onChange={handleChange}
                                     className="w-full px-4 py-3 border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                     required
                                 />
@@ -68,7 +93,7 @@ function LoginForm() {
 
                             <div className="mb-4">
                                 <button
-                                    type="button"
+                                    type="submit"
                                     className="w-full py-3 bg-[#de767e] text-white font-medium rounded-lg hover:bg-[#c63e81] transition"
                                 >
                                     Đăng nhập
@@ -106,4 +131,4 @@ function LoginForm() {
     );
 }
 
-export default LoginForm;
+export default Login;

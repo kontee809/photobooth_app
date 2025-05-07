@@ -9,6 +9,9 @@ import LoginForm from './component/LoginForm';
 import { AuthProvider } from './Context/AuthContext';  // Import AuthProvider
 import backgroundImage from './assets/background.jpg';
 
+import PrivateRoute from './component/PrivateRoute';
+import PublicOnlyRoute from './component/PublicOnlyRoute';
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,9 +21,25 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/camera" element={<WebcamCapture />} />
-            <Route path='/sign-up' element={<RegisterForm />} />
-            <Route path='/sign-in' element={<LoginForm />} />
+            <Route path="/camera" element={
+              <PrivateRoute>
+                <WebcamCapture />
+              </PrivateRoute>
+              
+            } />
+            <Route path='/sign-up' element={
+              <PublicOnlyRoute>
+                <RegisterForm />
+              </PublicOnlyRoute>
+              
+            } />
+
+            <Route path='/sign-in' element={
+              <PublicOnlyRoute>
+                <LoginForm />
+              </PublicOnlyRoute>
+              
+            } />
           </Routes>
 
           <Footer />

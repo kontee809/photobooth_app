@@ -9,6 +9,8 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
+    const isAuthenticated = !!token;
+
     // useEffect(() => {
     //     if (token) {
     //         const getUser = async () => {
@@ -50,10 +52,10 @@ const AuthProvider = ({ children }) => {
         setToken(null);
         setUser(null);
         localStorage.removeItem("token");
-        navigate("/login");
+        navigate("/sign-in");
 };
     return (
-        <AuthContext.Provider value={{ register, login, logout, user, setUser, token, setToken }}>
+        <AuthContext.Provider value={{ register, login, logout, user, setUser, token, setToken, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

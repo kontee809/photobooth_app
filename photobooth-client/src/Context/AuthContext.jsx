@@ -20,26 +20,26 @@ const AuthProvider = ({ children }) => {
     //         getUser();
     //     }
     // }, [token]); 
-     const login = async (email, password) => {
-    try {
-        const response = await loginUser({ email, password });
-        if (response?.access_token) {
-            setToken(response.access_token);
-            // Lưu token vào localStorage để sử dụng cho các lần truy cập sau
-            localStorage.setItem('token', response.access_token);
-            
-            // // Lấy thông tin người dùng sau khi đăng nhập thành công
-            // const userResponse = await fetchUserProfile(response.access_token);
-            // setUser(userResponse);  // Cập nhật thông tin người dùng
+    const login = async (email, password) => {
+        try {
+            const response = await loginUser({ email, password });
+            if (response?.access_token) {
+                setToken(response.access_token);
+                // Lưu token vào localStorage để sử dụng cho các lần truy cập sau
+                localStorage.setItem('token', response.access_token);
+                
+                // // Lấy thông tin người dùng sau khi đăng nhập thành công
+                // const userResponse = await fetchUserProfile(response.access_token);
+                // setUser(userResponse);  // Cập nhật thông tin người dùng
 
-            // Điều hướng đến trang profile
-            navigate('/camera');
+                // Điều hướng đến trang profile
+                navigate('/camera');
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            // Bạn có thể xử lý thêm các lỗi ở đây, chẳng hạn như thông báo lỗi đăng nhập
         }
-    } catch (error) {
-        console.error("Login error:", error);
-        // Bạn có thể xử lý thêm các lỗi ở đây, chẳng hạn như thông báo lỗi đăng nhập
-    }
-};
+    };
 
 
     const register = async (user_name, email, password) => {

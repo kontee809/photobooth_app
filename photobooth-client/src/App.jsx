@@ -6,6 +6,7 @@ import Home from './component/Home';
 import Footer from './component/Footer';
 import RegisterForm from './component/RegisterForm';
 import LoginForm from './component/LoginForm';
+import WebCamAI from './component/Camera_AI';
 import { AuthProvider } from './Context/AuthContext';  // Import AuthProvider
 import backgroundImage from './assets/background.jpg';
 
@@ -40,6 +41,10 @@ export default function App() {
               </PublicOnlyRoute>
               
             } />
+
+            <Route path='/camera-ai' element={
+              <WebCamAI />
+            }/>
           </Routes>
 
           <Footer />

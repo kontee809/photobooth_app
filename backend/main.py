@@ -64,7 +64,7 @@ def login():
         "user_name": user.user_name,
         "email": user.email,
     })
-    print("dang nhap thanh congcong")
+    print("dang nhap thanh cong")
     return jsonify({"message": "Đăng nhập thành công", "access_token": access_token})
 
 

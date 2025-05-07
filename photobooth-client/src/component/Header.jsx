@@ -11,7 +11,7 @@ export default function Header() {
         {/* <!-- lg+ --> */}
         <nav class="flex items-center justify-between h-16 lg:h-20">
             <div class="flex-shrink-0">
-            <a href="#" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+            <a href="/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
                 <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">PhotoBooth</span>
             </a>

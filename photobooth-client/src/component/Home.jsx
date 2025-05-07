@@ -8,28 +8,28 @@ export default function Home() {
 
       <div className="flex flex-col md:flex-row items-center justify-center gap-16 px-4">
         {/* Template 1 */}
-        <div className="border border-black rounded-md p-6 px-40 text-center hover:scale-105 transition">
-          <Link to="/camera">
+        <Link to="/camera">
+          <div className="border border-black rounded-md p-6 px-40 text-center hover:scale-105 transition">
             <img
               src="https://meobeostudio.com/images/4_images.png"
               alt="3 Pictures (Diagonal)"
               className="w-28 h-auto mx-auto mb-4"
             />
             <p className="font-medium">Chụp ảnh miễn phí</p>
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         {/* Template 2 */}
-        <div className="border border-black rounded-md py-6 px-40 text-center hover:scale-105 transition">
-          <Link to="/camera">
+        <Link to="/camera">
+          <div className="border border-black rounded-md py-6 px-40 text-center hover:scale-105 transition">
             <img
               src="https://meobeostudio.com/images/4_images.png"
               alt="4 Pictures (2x2)"
               className="w-28 h-auto mx-auto mb-4"
             />
-            <p className="font-medium">Chụp ảnh với AI</p>
-          </Link>
-        </div>
+            <p className="font-medium">Chụp ảnh với AI</p> 
+          </div>
+        </Link>
       </div>
 
       {/* Back Button */}

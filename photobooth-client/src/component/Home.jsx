@@ -20,7 +20,7 @@ export default function Home() {
         </Link>
 
         {/* Template 2 */}
-        <Link to="/camera">
+        <Link to="/camera-ai">
           <div className="border border-black rounded-md py-6 px-40 text-center hover:scale-105 transition">
             <img
               src="https://meobeostudio.com/images/4_images.png"

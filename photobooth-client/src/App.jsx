@@ -9,9 +9,9 @@ import LoginForm from './component/LoginForm';
 import WebCamAI from './component/Camera_AI';
 import { AuthProvider } from './Context/AuthContext';  // Import AuthProvider
 import backgroundImage from './assets/background.jpg';
-
 import PrivateRoute from './component/PrivateRoute';
 import PublicOnlyRoute from './component/PublicOnlyRoute';
+import FrameAI from './component/FrameAI';
 
 export default function App() {
   return (
@@ -44,6 +44,10 @@ export default function App() {
 
             <Route path='/camera-ai' element={
               <WebCamAI />
+            }/>
+
+            <Route path='/frame' element={
+              <FrameAI />
             }/>
           </Routes>
 

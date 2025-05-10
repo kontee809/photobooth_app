@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const WebCamAI = () => {
   const webcamRef = useRef(null);
@@ -11,6 +12,8 @@ const WebCamAI = () => {
   const [selectedFunction, setSelectedFunction] = useState("");
   const [resultPhotos, setResultPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const capture = useCallback(() => {
     if (photos.length >= 3 || !webcamRef.current) return;
@@ -82,6 +85,11 @@ const WebCamAI = () => {
     } finally {
       setLoading(false);
     }
+
+  };
+
+  const handleGoToFrame = () => {
+    navigate('/frame', { state: { photos: resultPhotos } });
   };
 
   return (
@@ -199,6 +207,15 @@ const WebCamAI = () => {
               )}
             </div>
           </div>
+
+          {resultPhotos.length === 3 && (
+            <button
+              onClick={handleGoToFrame}
+              className="mt-6 px-6 py-2 bg-pink-500 text-white rounded-lg"
+            >
+              Chọn Frame
+            </button>
+          )}
         </div>
       )}
     </div>

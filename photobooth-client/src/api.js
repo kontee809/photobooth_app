@@ -23,18 +23,67 @@ const loginUser = async (credentials) => {
 };
 
 const registerUser = async (userData) => {
-  // console.log(userData);
-  
-  try {
-    await axios.post(`${API_URL}/register`, userData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  } catch (error) {
-    console.error("Registration error:", error);
-    throw error;
-  }
+    try {
+        const response = await axios.post(`${API_URL}/register`, userData, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;  // Nếu thành công, trả về dữ liệu (thông thường là response.data)
+    } catch (error) {
+        console.error("Registration error:", error);
+        
+        if (error.response) {
+            // Lỗi do server trả về, kiểm tra mã lỗi và dữ liệu lỗi
+            const status = error.response.status;
+            const errorData = error.response.data;
+            
+            if (status === 409) {
+                // Lỗi email đã tồn tại
+                throw new Error('Email đã tồn tại. Vui lòng sử dụng email khác!');
+            } else {
+                // Lỗi khác từ server
+                throw new Error(errorData?.error || 'Đăng ký không thành công');
+            }
+        } else if (error.request) {
+            // Nếu không có phản hồi từ server (ví dụ do mất kết nối)
+            throw new Error('Lỗi kết nối với server. Vui lòng thử lại.');
+        } else {
+            // Lỗi khác, có thể là lỗi cấu hình hoặc lỗi khi gửi request
+            throw new Error('Đã xảy ra lỗi không xác định. Vui lòng thử lại.');
+        }
+    }
 };
 
-export { registerUser , loginUser };
+
+const checkPayment = async (token) => {
+    try {
+      const response = await axios.post(`${API_URL}/check_payment`, {},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data.message);
+      return response.data ;
+    } catch (error) {
+      console.error("Check error:", error);
+      throw error;
+    }
+  }
+  
+  const updateData = async (token , payment) => {
+   try {
+      const response = await axios.post(`${API_URL}/update`, payment,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data.message);
+      return response.data ;
+    } catch (error) {
+      console.error("Check error:", error);
+      throw error;
+    }
+  }
+export { registerUser , loginUser , checkPayment,updateData };

@@ -12,6 +12,9 @@ import backgroundImage from './assets/background.jpg';
 import PrivateRoute from './component/PrivateRoute';
 import PublicOnlyRoute from './component/PublicOnlyRoute';
 import FrameAI from './component/FrameAI';
+import CheckPayment from './component/CheckPayment';
+import Payment from './component/Payment';
+import DonePayment from './component/DonePayment';
 
 export default function App() {
   return (
@@ -43,11 +46,28 @@ export default function App() {
             } />
 
             <Route path='/camera-ai' element={
-              <WebCamAI />
+              <PrivateRoute>
+                <CheckPayment>
+                  <WebCamAI />
+                </CheckPayment>
+              </PrivateRoute>
+              
             }/>
 
             <Route path='/frame' element={
               <FrameAI />
+            }/>
+
+            <Route path='/payment' element={
+              <PrivateRoute>
+                <Payment />
+              </PrivateRoute>
+            } />
+
+            <Route path='/done-payment' element={
+              <PrivateRoute>
+                <DonePayment />
+              </PrivateRoute>
             }/>
           </Routes>
 

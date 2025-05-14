@@ -1,65 +1,68 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser , loginUser } from '../api';
+import { registerUser, loginUser } from '../api';
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');  // Thêm state để lưu thông báo lỗi
     const navigate = useNavigate();
 
     const isAuthenticated = !!token;
 
-    // useEffect(() => {
-    //     if (token) {
-    //         const getUser = async () => {
-    //             const user = await fetchUserProfile(token);
-    //             setUser(user);
-    //         };
-    //         getUser();
-    //     }
-    // }, [token]); 
     const login = async (email, password) => {
+        if(!email || !password) {
+            setErrorMessage("Vui lòng điền đầy đủ thông tin!")
+            return; 
+        }
         try {
             const response = await loginUser({ email, password });
             if (response?.access_token) {
                 setToken(response.access_token);
-                // Lưu token vào localStorage để sử dụng cho các lần truy cập sau
                 localStorage.setItem('token', response.access_token);
-                
-                // // Lấy thông tin người dùng sau khi đăng nhập thành công
-                // const userResponse = await fetchUserProfile(response.access_token);
-                // setUser(userResponse);  // Cập nhật thông tin người dùng
-
-                // Điều hướng đến trang profile
-                navigate('/camera');
+                navigate('/');
             }
         } catch (error) {
-            console.error("Login error:", error);
-            // Bạn có thể xử lý thêm các lỗi ở đây, chẳng hạn như thông báo lỗi đăng nhập
+            if (error?.response?.data?.message) {
+            setErrorMessage(error.response.data.message || 'Lỗi đăng nhập');
+        } else {
+            setErrorMessage('Email hoặc mật khẩu không đúng!');
+        } 
+        }
+    };
+
+    const register = async (user_name, email, password) => {
+        if (!user_name || !email || !password) {
+            setErrorMessage("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        try {
+            await registerUser({ user_name, email, password });
+            navigate('/sign-in');
+        } catch (error) {
+            console.error("Full error:", error);
+            // Kiểm tra lỗi trả về từ backend
+            setErrorMessage(error.message || 'Đã xảy ra lỗi. Vui lòng thử lại.');
         }
     };
 
 
-    const register = async (user_name, email, password) => {
-        // console.log({ "username": user_name, "email": email, "password": password  });
-        await registerUser({ user_name, email, password });
-        console.log({ user_name, email, password });
-        navigate('/sign-in');  // Đảm bảo đường dẫn đúng là '/sign-up'
-    };
+
     const logout = () => {
         setToken(null);
         setUser(null);
         localStorage.removeItem("token");
         navigate("/sign-in");
-};
+    };
+
     return (
-        <AuthContext.Provider value={{ register, login, logout, user, setUser, token, setToken, isAuthenticated }}>
+        <AuthContext.Provider value={{ register, login, logout, user, setUser, token, setToken, isAuthenticated, errorMessage, setErrorMessage }}>
             {children}
         </AuthContext.Provider>
     );
-    
-}
+};
 
 export { AuthProvider, AuthContext };

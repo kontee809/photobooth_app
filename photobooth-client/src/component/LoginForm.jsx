@@ -5,7 +5,7 @@ import cameraIcon from '../assets/camera-icon.png';
 
 const Login = () => {
     const [formData, setFormData] = useState({email: '', password: ''});
-    const {login} = useContext(AuthContext);
+    const {login, errorMessage, setErrorMessage} = useContext(AuthContext);
 
     const handleChange = (e) => {
         setFormData({
@@ -16,6 +16,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrorMessage('');
         try {
             login(formData.email, formData.password);
         } catch (err) {
@@ -58,7 +59,7 @@ const Login = () => {
                                     placeholder="Email"
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                    required="required"/>
+                                    />
                             </div>
                             <div className="mb-4">
                                 <input
@@ -67,10 +68,10 @@ const Login = () => {
                                     placeholder="Mật khẩu"
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                    required="required"/>
+                                    />
                             </div>
 
-                            <div className="mb-6 flex items-center justify-between text-sm">
+                            <div className="mb-3 flex items-center justify-between text-sm">
                                 <div className="flex items-center">
                                     <input type="checkbox" id="formCheck" className="mr-2"/>
                                     <label htmlFor="formCheck" className="text-gray-600">
@@ -81,6 +82,12 @@ const Login = () => {
                                     Quên mật khẩu?
                                 </a>
                             </div>
+
+                            {errorMessage && (
+                                <div className="error-message text-red-500 text-center mb-3">
+                                    <p>{errorMessage}</p>
+                                </div>
+                            )}
 
                             <div className="mb-4">
                                 <button

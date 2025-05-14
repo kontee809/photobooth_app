@@ -92,7 +92,7 @@ const FrameAI = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br p-4">
-      <h2 className="text-2xl font-semibold mb-6">Choose Your Frame</h2>
+      <h2 className="text-2xl font-semibold mb-6">Chọn Frame</h2>
 
       <div className="flex flex-col md:flex-row items-center gap-8">
         {/* LEFT: FRAME PREVIEW */}
@@ -111,7 +111,7 @@ const FrameAI = () => {
         {/* RIGHT: OPTIONS */}
         <div className="text-center space-y-6">
           <div>
-            <h3 className="font-semibold">Background Texture</h3>
+            <h3 className="font-semibold">Mẫu Frame</h3>
             <div className="flex justify-center gap-3 mt-2 flex-wrap max-w-[220px]">
               {frames.map((frame, i) => (
                 <div
@@ -135,7 +135,7 @@ const FrameAI = () => {
             onClick={handleDownload}
             className="px-6 py-2 bg-[#de767e] text-white hover:bg-[#c63e81] rounded"
           >
-            Download
+            Tải xuống
           </button>
         </div>
       </div>

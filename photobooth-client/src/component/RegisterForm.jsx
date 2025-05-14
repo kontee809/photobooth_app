@@ -1,23 +1,24 @@
-import React, { useState, useContext } from 'react'; // Kết hợp tất cả các imports của React, useState và useContext
-import googleIcon from '../assets/google_logo_icon_169090.png';
-import { AuthContext } from '../Context/AuthContext';
-const Register = () => {
-   const [formData, setFormData] = useState({
+import React, { useState, useContext } from 'react'; 
+import { AuthContext } from '../Context/AuthContext';  // Nhớ import AuthContext
+
+const RegisterForm = () => {
+    const [formData, setFormData] = useState({
         user_name: '',
         email: '',
         password: ''
     });
-    const { register } = useContext(AuthContext);
-     
+
+    const { register, errorMessage, setErrorMessage} = useContext(AuthContext);  // Lấy các hàm và state từ context
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        register(formData.user_name, formData.email, formData.password);
-        console.log(formData.user_name, formData.email, formData.password);
-
+        setErrorMessage('');
+        // Gọi register từ context
+        await register(formData.user_name, formData.email, formData.password);
     };
 
     return (
@@ -40,7 +41,7 @@ const Register = () => {
                         </div>
                         <div className="mb-4">
                             <input
-                                type="email" // Sửa type thành email (chuẩn hơn)
+                                type="email"
                                 name="email"
                                 placeholder="Email"
                                 onChange={handleChange}
@@ -57,43 +58,21 @@ const Register = () => {
                             />
                         </div>
 
-                        <div className="mb-4 flex items-center">
-                            <input
-                                type="checkbox"
-                                id="formCheck"
-                                className="mr-2"
-                            />
-                            <label htmlFor="formCheck" className="text-sm text-gray-600">
-                                Lưu thông tin
-                            </label>
-                        </div>
+                        {errorMessage && (
+                            <div className="mb-4 text-red-600 text-sm text-center">
+                                {errorMessage}
+                            </div>
+                        )}
 
                         <div className="mb-4">
                             <button
-                                type="submit" // Chuyển từ type="button" thành type="submit" để submit form
+                                type="submit"
                                 className="w-full py-3 text-sm font-medium text-white bg-[#de767e] rounded-lg hover:bg-[#c63e81] transition"
                             >
                                 Đăng kí
                             </button>
                         </div>
 
-                        <div className="mb-4">
-                            <button className="w-full py-3 text-sm font-medium bg-white border rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition">
-                                <img
-                                    src={googleIcon}
-                                    alt="Google icon"
-                                    className="w-5 h-5"
-                                />
-                                <span>Đăng nhập với Google</span>
-                            </button>
-                        </div>
-
-                        <div className="text-center text-sm">
-                            <span>Bạn đã có tài khoản? </span>
-                            <a href="/sign-in" className="text-emerald-600 hover:underline">
-                                Đăng nhập
-                            </a>
-                        </div>
                     </div>
                 </div>
             </form>
@@ -101,4 +80,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default RegisterForm;

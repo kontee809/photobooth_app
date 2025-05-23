@@ -12,6 +12,8 @@ const WebCamAI = () => {
   const [selectedFunction, setSelectedFunction] = useState("");
   const [resultPhotos, setResultPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
+  //moi
+  const [backgroundImage, setBackgroundImage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -63,15 +65,18 @@ const WebCamAI = () => {
   const resetAll = () => {
     setPhotos([]);
     setResultPhotos([]);
+    setBackgroundImage(null); // reset luôn ảnh nền
   };
 
   const handleAIProcessing = async () => {
-    if (selectedFunction !== "anime" || photos.length !== 3) return;
+    if (!selectedFunction || photos.length !== 3) return;
 
     try {
       setLoading(true);
       const res = await axios.post("http://localhost:5000/process", {
         images: photos,
+        mode: selectedFunction,
+        background: backgroundImage,
       });
 
       if (res.data.status === "success") {
@@ -91,6 +96,18 @@ const WebCamAI = () => {
   const handleGoToFrame = () => {
     navigate('/frame', { state: { photos: resultPhotos } });
   };
+  //moi
+  const handleBackgroundUpload = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    setBackgroundImage(reader.result); // base64 ảnh nền
+  };
+  reader.readAsDataURL(file);
+
+};
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br p-4">
@@ -179,8 +196,25 @@ const WebCamAI = () => {
             >
               <option value="">Chọn chức năng</option>
               <option value="anime">Chuyển sang ảnh Anime</option>
+              {/* moi */}
+              <option value="remove-bg">Xóa nền và thay nền</option>
             </select>
           </div>
+
+          {/* moi */}
+          {selectedFunction === "remove-bg" && (
+            <div className="mb-4">
+              <label className="font-medium text-sm">Chọn ảnh nền (mới):</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBackgroundUpload}
+                className="mt-1 block"
+              />
+            </div>
+          )}
+
+
 
           <button
             onClick={handleAIProcessing}

@@ -1,6 +1,7 @@
 import base64
 import numpy as np
 import cv2
+from rembg import remove
 from sqlalchemy.sql import func
 
 MAX_DIM = 1024
@@ -16,6 +17,26 @@ def process_image(img: np.ndarray, x8: bool = True) -> np.ndarray:
         img = cv2.resize(img, (to_8s(w), to_8s(h)))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32) / 127.5 - 1.0
     return img
+
+def remove_background_and_merge(foreground_img, background_img):
+
+    # Loại bỏ nền
+    _, buffer = cv2.imencode('.png', foreground_img)
+    removed_bytes = remove(buffer.tobytes())
+    fg = cv2.imdecode(np.frombuffer(removed_bytes, np.uint8), cv2.IMREAD_UNCHANGED)
+
+    # Resize background to match
+    bg_resized = cv2.resize(background_img, (fg.shape[1], fg.shape[0]))
+
+    # Tách alpha và ghép
+    alpha = fg[:, :, 3] / 255.0
+    fg_rgb = fg[:, :, :3]
+    composite = np.zeros_like(fg_rgb)
+    for c in range(3):
+        composite[:, :, c] = fg_rgb[:, :, c] * alpha + bg_resized[:, :, c] * (1 - alpha)
+
+    return composite
+
 
 def convert_numpy_to_anime(img_np: np.ndarray, orig_shape: tuple) -> np.ndarray:
     from routes.process_routes import session  # tránh vòng lặp import

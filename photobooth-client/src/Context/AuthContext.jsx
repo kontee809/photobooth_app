@@ -1,12 +1,14 @@
 import React, { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser, loginUser } from '../api';
+import { registerUser, loginUser, getListUser, checkRole } from '../api';
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [user, setUser] = useState(null);
+    const [users, setUsers] = useState([]);
+    const [role, setRole ] = useState('');
+    const [amount , setAmount] = useState('');
     const [errorMessage, setErrorMessage] = useState('');  // Thêm state để lưu thông báo lỗi
     const navigate = useNavigate();
 
@@ -22,6 +24,10 @@ const AuthProvider = ({ children }) => {
             if (response?.access_token) {
                 setToken(response.access_token);
                 localStorage.setItem('token', response.access_token);
+                localStorage.setItem('user_name', response.user_name);
+                //localStorage.setItem('role', response.role);
+                setRole(response.role)
+                console.log(role)
                 navigate('/');
             }
         } catch (error) {
@@ -49,17 +55,38 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    const checkrole = async () => {
+        try {
+            const response = await checkRole(token)
+            setRole(response.role);
+        } catch (error) {
+            console.error("Lỗi khi gọi getListUser trong context:", error);
+        }
+    }
 
+    const getListUserContext = async () => {
+    try {
+        const response = await getListUser(token);
+        if (response) {
+            // setRole(response.admin); // giả sử API trả về `admin: "admin"`
+            setUsers(response.data_user);
+            setAmount(response.total_amount)
+        }
+    } catch (error) {
+        console.error("Lỗi khi gọi getListUser trong context:", error);
+    }
+};
 
     const logout = () => {
-        setToken(null);
-        setUser(null);
-        localStorage.removeItem("token");
-        navigate("/sign-in");
-    };
+    setToken(null);
+    setUsers([]); // ✅ sửa ở đây
+    localStorage.removeItem("token");
+    navigate("/sign-in");
+};
+
 
     return (
-        <AuthContext.Provider value={{ register, login, logout, user, setUser, token, setToken, isAuthenticated, errorMessage, setErrorMessage }}>
+        <AuthContext.Provider value={{ register, login, logout, users, setUsers, token, setToken, isAuthenticated, errorMessage, setErrorMessage, role , getListUserContext , amount , checkrole }}>
             {children}
         </AuthContext.Provider>
     );

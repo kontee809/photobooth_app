@@ -46,8 +46,8 @@ def login():
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
     if user and verify_password(data['password'], user.password_hash):
-        access_token = create_access_token({'id': user.id, 'email': user.email})
-        return jsonify({'access_token': access_token})
+        access_token = create_access_token({'id': user.id, 'email': user.email, 'user_name': user.user_name , 'role': user.role})
+        return jsonify({'access_token': access_token , 'user_name': user.user_name , 'role': user.role})
     else:
         return jsonify({'message': 'Tài khoản hoặc mật khẩu không đúng!'}), 401
     
@@ -75,6 +75,11 @@ def check_payment():
         return jsonify({"message": "User has not purchased premium"}), 403
 
     return jsonify({"message": f"User {user.user_name} has premium access."})
+
+
+
+
+
 
 
 @auth_bp.route('/update', methods=['POST'])
@@ -111,6 +116,9 @@ def updatePremium():
         db.session.commit()
 
         return jsonify({'payURL': 'http://localhost:3000/camera-ai'}), 200
+    
+    
+
 
     except Exception as e:
         import traceback

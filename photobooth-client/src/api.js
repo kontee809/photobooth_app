@@ -70,6 +70,40 @@ const checkPayment = async (token) => {
       throw error;
     }
   }
+
+ const getListUser = async (token) => {
+  try {
+    const response = await axios.post(`${API_URL}/getlistUser`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (response.data && response.data.data_user) {
+      return response.data;
+    }
+
+    return null; // Nếu không có data_user
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+    return null; // hoặc bạn có thể throw error nếu muốn xử lý phía trên
+  }
+};
+
+  const checkRole = async (token) => {
+    try {
+      const response = await axios.post(`${API_URL}/checkRole`, {},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data
+    } catch (error) {
+      console.error("Check error:", error);
+      throw error;
+    }
+  }
   
   const updateData = async (token , payment) => {
    try {
@@ -86,4 +120,4 @@ const checkPayment = async (token) => {
       throw error;
     }
   }
-export { registerUser , loginUser , checkPayment,updateData };
+export { registerUser , loginUser , checkPayment,updateData , getListUser , checkRole };

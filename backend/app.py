@@ -5,6 +5,7 @@ from core.database import db  # Import db
 from routes.auth_routes import auth_bp  # Import blueprint
 from routes.process_routes import process_bp  # Import blueprint
 from routes.apimomo import momo_bp
+from routes.admin_routes import admin
 
 app = Flask(__name__)
 app.config.from_object(Config)  # Áp dụng cấu hình từ class Config
@@ -17,6 +18,7 @@ CORS(app, supports_credentials=True)
 app.register_blueprint(auth_bp)
 app.register_blueprint(process_bp)
 app.register_blueprint(momo_bp)
+app.register_blueprint(admin)
 
 # Tạo bảng nếu chưa có
 with app.app_context():

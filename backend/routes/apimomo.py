@@ -19,7 +19,7 @@ def create_payment():
     data = request.get_json()
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
-        return jsonify({"error": "Unauthorized"}), 401
+        return jsonify({"error": "Unauthorized"}    ), 401
 
     token = auth_header.split(" ")[1]
     payload = verify_token(token)

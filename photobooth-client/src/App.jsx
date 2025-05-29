@@ -15,6 +15,8 @@ import FrameAI from './component/FrameAI';
 import CheckPayment from './component/CheckPayment';
 import Payment from './component/Payment';
 import DonePayment from './component/DonePayment';
+import AdminDashboard from './component/AdminDashboard';
+import CheckRole from './component/CheckRole';
 
 export default function App() {
   return (
@@ -69,6 +71,15 @@ export default function App() {
                 <DonePayment />
               </PrivateRoute>
             }/>
+
+            <Route path="/admin/dashboard" element={
+              <PrivateRoute>
+                <CheckRole>
+                  <AdminDashboard />
+                </CheckRole>
+              </PrivateRoute>
+              
+            } />
           </Routes>
 
           <Footer />
